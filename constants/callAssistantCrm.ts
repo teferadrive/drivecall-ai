@@ -63,6 +63,7 @@ export type QuickAction = {
   label: string;
   detail: string;
   icon: LucideIcon;
+  emoji: string;
   tone: 'primary' | 'neutral' | 'success' | 'danger';
   target: QuickActionTarget;
 };
@@ -72,6 +73,7 @@ export type DashboardMetric = {
   value: string;
   trend: string;
   icon: LucideIcon;
+  emoji: string;
 };
 
 export const defaultWhatsAppSenderNumber = '0557221170';
@@ -101,36 +103,42 @@ export const dashboardMetrics: DashboardMetric[] = [
     value: '18',
     trend: '6 עדיין דורשות טיפול',
     icon: Phone,
+    emoji: '📞',
   },
   {
     label: 'לידים חדשים',
     value: '7',
     trend: '3 משיחות נכנסות',
     icon: UsersRound,
+    emoji: '🧑‍🤝‍🧑',
   },
   {
     label: 'תלמידים חדשים',
     value: '4',
     trend: '2 נקבעו לשיעור ראשון',
     icon: GraduationCap,
+    emoji: '🎓',
   },
   {
     label: 'תלמידים פעילים',
     value: '42',
     trend: '9 צריכים שיעור השבוע',
     icon: Car,
+    emoji: '🚗',
   },
   {
     label: 'תזכורות להיום',
     value: '11',
     trend: '5 תשלומים פתוחים',
     icon: Bell,
+    emoji: '🔔',
   },
   {
     label: 'משימות להיום',
     value: '14',
     trend: '8 בעדיפות גבוהה',
     icon: CheckCircle2,
+    emoji: '✅',
   },
 ];
 
@@ -234,6 +242,7 @@ export const quickActions: QuickAction[] = [
     label: 'סיימתי שיחה במספר הנוסף',
     detail: 'תיעוד שיחה ידני חכם',
     icon: Smartphone,
+    emoji: '📱',
     tone: 'primary',
     target: 'external-call',
   },
@@ -241,6 +250,7 @@ export const quickActions: QuickAction[] = [
     label: 'שליחת WhatsApp',
     detail: 'פתיחת הודעה מוכנה',
     icon: MessageCircle,
+    emoji: '💬',
     tone: 'primary',
     target: 'customers',
   },
@@ -248,6 +258,7 @@ export const quickActions: QuickAction[] = [
     label: 'שליחת SMS',
     detail: 'הודעת המשך קצרה',
     icon: Send,
+    emoji: '✉️',
     tone: 'neutral',
     target: 'customers',
   },
@@ -255,6 +266,7 @@ export const quickActions: QuickAction[] = [
     label: 'קישור לאפליקציה',
     detail: 'אפליקציית תיאוריה',
     icon: Link2,
+    emoji: '🔗',
     tone: 'success',
     target: 'customers',
   },
@@ -262,6 +274,7 @@ export const quickActions: QuickAction[] = [
     label: 'קישור להרשמה',
     detail: 'טופס תלמיד חדש',
     icon: FileText,
+    emoji: '📝',
     tone: 'success',
     target: 'customers',
   },
@@ -269,6 +282,7 @@ export const quickActions: QuickAction[] = [
     label: 'קביעת שיעור',
     detail: 'פתיחת יומן',
     icon: CalendarClock,
+    emoji: '📅',
     tone: 'primary',
     target: 'calendar',
   },
@@ -276,6 +290,7 @@ export const quickActions: QuickAction[] = [
     label: 'מבחן תיאוריה',
     detail: 'הוספת תזכורת',
     icon: BookOpenCheck,
+    emoji: '📖',
     tone: 'neutral',
     target: 'calendar',
   },
@@ -283,6 +298,7 @@ export const quickActions: QuickAction[] = [
     label: 'תזכורת',
     detail: 'מעקב אוטומטי',
     icon: Bell,
+    emoji: '🔔',
     tone: 'neutral',
     target: 'calendar',
   },
@@ -290,6 +306,7 @@ export const quickActions: QuickAction[] = [
     label: 'התקשרות חוזרת',
     detail: 'חיוג מהיר',
     icon: Phone,
+    emoji: '📞',
     tone: 'primary',
     target: 'customers',
   },
@@ -297,6 +314,7 @@ export const quickActions: QuickAction[] = [
     label: 'פתיחת Waze',
     detail: 'ניווט לכתובת',
     icon: Navigation,
+    emoji: '🧭',
     tone: 'neutral',
     target: 'customers',
   },
@@ -304,6 +322,7 @@ export const quickActions: QuickAction[] = [
     label: 'Google Maps',
     detail: 'פתיחת מיקום',
     icon: MapIcon,
+    emoji: '🗺️',
     tone: 'neutral',
     target: 'customers',
   },
@@ -311,6 +330,7 @@ export const quickActions: QuickAction[] = [
     label: 'שמירת איש קשר',
     detail: 'יצירה באנשי קשר',
     icon: Save,
+    emoji: '💾',
     tone: 'success',
     target: 'customers',
   },
@@ -318,6 +338,7 @@ export const quickActions: QuickAction[] = [
     label: 'מחיקת הליד',
     detail: 'מחיקה לאחר אישור',
     icon: Trash2,
+    emoji: '🗑️',
     tone: 'danger',
     target: 'customers',
   },

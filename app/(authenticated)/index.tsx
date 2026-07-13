@@ -146,17 +146,17 @@ export default function HomePage() {
                 <View
                   className={`${tw.flexRow} mb-3 items-center justify-between`}
                 >
-                  <View className="rounded-md bg-[#d3e3ff] p-2">
-                    <metric.icon size={18} color="#005da7" />
+                  <View className="rounded-xl bg-[#d3e3ff] px-2 py-1">
+                    <Text className="text-3xl">{metric.emoji}</Text>
                   </View>
-                  <Text className="text-right text-sm text-[#414751]">
+                  <Text className="text-right text-base text-[#414751]">
                     {metric.label}
                   </Text>
                 </View>
-                <Text className="text-right text-3xl font-bold text-[#191c21]">
+                <Text className="text-right text-4xl font-bold text-[#191c21]">
                   {metric.value}
                 </Text>
-                <Text className="mt-1 text-right text-xs text-[#727782]">
+                <Text className="mt-1 text-right text-sm text-[#727782]">
                   {metric.trend}
                 </Text>
               </View>
@@ -274,14 +274,12 @@ export default function HomePage() {
                 onPress={() => handleQuickAction(action.target)}
               >
                 <View className={`${tw.flexRow} items-start gap-3`}>
-                  <View className={`rounded-md p-2 ${toneClass(action.tone)}`}>
-                    <action.icon size={18} color="#ffffff" />
-                  </View>
+                  <Text className="text-4xl">{action.emoji}</Text>
                   <View className="flex-1">
-                    <Text className="text-right text-sm font-bold text-[#191c21]">
+                    <Text className="text-right text-base font-bold text-[#191c21]">
                       {action.label}
                     </Text>
-                    <Text className="mt-1 text-right text-xs leading-4 text-[#414751]">
+                    <Text className="mt-1 text-right text-sm leading-4 text-[#414751]">
                       {action.detail}
                     </Text>
                   </View>
@@ -356,20 +354,4 @@ function InfoRow({ label, value }: { label: string; value: string }) {
       <Text className="text-sm text-[#414751]">{label}</Text>
     </View>
   );
-}
-
-function toneClass(tone: 'primary' | 'neutral' | 'success' | 'danger') {
-  if (tone === 'primary') {
-    return 'bg-[#005da7]';
-  }
-
-  if (tone === 'success') {
-    return 'bg-[#1b6d24]';
-  }
-
-  if (tone === 'danger') {
-    return 'bg-red-600';
-  }
-
-  return 'bg-[#727782]';
 }
