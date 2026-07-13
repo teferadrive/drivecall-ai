@@ -43,4 +43,13 @@ yarn-error.*
 
 # generated native folders
 /ios
-/android
+
+# Android: track the native project (holds the custom AndroidCallStateModule),
+# but ignore build outputs and machine-local files.
+/android/build/
+/android/app/build/
+/android/.gradle/
+/android/.kotlin/
+/android/local.properties
+/android/app/release/
+/android/app/debug/
