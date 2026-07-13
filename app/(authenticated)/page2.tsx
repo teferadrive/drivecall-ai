@@ -1,6 +1,10 @@
+import DateTimePicker, {
+  type DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
 import { useConvexAuth, useMutation, useQuery } from 'convex/react';
 import {
   BellRing,
+  CalendarClock,
   CalendarDays,
   CheckCircle2,
   Clock3,
@@ -13,6 +17,7 @@ import {
   ActivityIndicator,
   Alert,
   Linking,
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -67,6 +72,8 @@ export default function OperationsScreen() {
     useState<Id<'customers'>>();
   const [lessonDate, setLessonDate] = useState(getDateInputValue(new Date()));
   const [lessonTime, setLessonTime] = useState('09:00');
+  // מצב הבורר הנייטיב: 'date' / 'time' כשפתוח, null כשסגור.
+  const [pickerMode, setPickerMode] = useState<'date' | 'time' | null>(null);
   const [durationMinutes, setDurationMinutes] = useState('40');
   const [lessonNotes, setLessonNotes] = useState('');
   const [reminderTitle, setReminderTitle] = useState('לחזור אליו');
@@ -140,6 +147,28 @@ export default function OperationsScreen() {
         },
       ]
     : reports;
+
+  // ה-Date הנוכחי המורכב מ-state (משמש לאתחול הבורר הנייטיב).
+  const lessonDateTime =
+    parseLocalDateTime(lessonDate, lessonTime) ?? Date.now();
+
+  // עדכון ה-state בעקבות בחירה בבורר הנייטיב.
+  const handlePickerChange = (event: DateTimePickerEvent, selected?: Date) => {
+    // באנדרואיד הבורר נסגר אוטומטית; סוגרים גם בביטול.
+    if (Platform.OS === 'android') {
+      setPickerMode(null);
+    }
+
+    if (event.type === 'dismissed' || !selected) {
+      return;
+    }
+
+    if (pickerMode === 'date') {
+      setLessonDate(getDateInputValue(selected));
+    } else if (pickerMode === 'time') {
+      setLessonTime(getTimeInputValue(selected));
+    }
+  };
 
   const handleCreateLesson = async () => {
     if (!activeCustomerId) {
@@ -287,16 +316,28 @@ export default function OperationsScreen() {
               </Text>
             </View>
             <View className="gap-3">
-              <FormField
-                label="תאריך"
-                onChangeText={setLessonDate}
-                value={lessonDate}
-              />
-              <FormField
-                label="שעה"
-                onChangeText={setLessonTime}
-                value={lessonTime}
-              />
+              <View className={`${tw.flexRow} gap-3`}>
+                <PickerButton
+                  icon={CalendarDays}
+                  label="תאריך"
+                  onPress={() => setPickerMode('date')}
+                  value={formatDateLabel(lessonDate)}
+                />
+                <PickerButton
+                  icon={Clock3}
+                  label="שעה"
+                  onPress={() => setPickerMode('time')}
+                  value={lessonTime}
+                />
+              </View>
+              {pickerMode !== null && (
+                <DateTimePicker
+                  display="default"
+                  mode={pickerMode}
+                  onChange={handlePickerChange}
+                  value={new Date(lessonDateTime)}
+                />
+              )}
               <FormField
                 keyboardType="number-pad"
                 label="משך בדקות"
@@ -594,6 +635,40 @@ function FormField({
   );
 }
 
+// כפתור שפותח את בורר התאריך/שעה הנייטיב ומציג את הערך הנבחר.
+function PickerButton({
+  label,
+  value,
+  icon: Icon,
+  onPress,
+}: {
+  label: string;
+  value: string;
+  icon: typeof CalendarDays;
+  onPress: () => void;
+}) {
+  return (
+    <View className="flex-1">
+      <Text className="mb-2 text-right text-sm font-bold text-[#414751]">
+        {label}
+      </Text>
+      <TouchableOpacity
+        accessibilityHint={`בחירת ${label}`}
+        accessibilityLabel={`${label}: ${value}`}
+        accessibilityRole="button"
+        accessible={true}
+        className={`${tw.flexRow} min-h-[48px] items-center gap-2 rounded-xl border border-[#c1c7d3] bg-[#f8f9ff] px-4 py-3`}
+        onPress={onPress}
+      >
+        <Icon size={18} color="#005da7" />
+        <Text className="flex-1 text-right text-base font-bold text-[#191c21]">
+          {value}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 function getTodayRange() {
   const start = new Date();
   start.setHours(0, 0, 0, 0);
@@ -613,6 +688,22 @@ function getDateInputValue(value: Date) {
   const day = String(value.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
+}
+
+function getTimeInputValue(value: Date) {
+  const hours = String(value.getHours()).padStart(2, '0');
+  const minutes = String(value.getMinutes()).padStart(2, '0');
+
+  return `${hours}:${minutes}`;
+}
+
+// תצוגת תאריך קריאה למשתמש (dd.mm.yyyy) מתוך מחרוזת YYYY-MM-DD.
+function formatDateLabel(dateValue: string) {
+  const [year, month, day] = dateValue.split('-');
+  if (!(year && month && day)) {
+    return dateValue;
+  }
+  return `${day}.${month}.${year}`;
 }
 
 function parseLocalDateTime(dateValue: string, timeValue: string) {

@@ -54,7 +54,8 @@
           "supportsRTL": true,
           "forcesRTL": true
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true
