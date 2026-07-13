@@ -16,6 +16,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { Path } from 'react-native-svg';
 
 import { PreviewModeBanner } from '@/components/PreviewModeBanner';
 import { WebViewModal } from '@/components/WebViewModal';
@@ -55,6 +56,27 @@ export default function SignUpScreen() {
     };
     loadRememberedEmail();
   }, []);
+
+  // הרשמה/התחברות עם Google (OAuth דרך Convex Auth).
+  const onGooglePress = async () => {
+    if (isPreviewMode) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await signIn('google');
+      router.replace('/(authenticated)');
+    } catch {
+      Alert.alert(
+        'התחברות Google',
+        'ההתחברות עם Google אינה זמינה עדיין. ודא שהוגדר ספק Google בשרת.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // פונקציית ההרשמה
   const onSignUpPress = async () => {
@@ -175,21 +197,21 @@ export default function SignUpScreen() {
           <View className="items-center mb-6">
             <LinearGradient
               colors={['#00457f', '#005da7', '#1b6d24']}
-              className="h-24 w-24 items-center justify-center rounded-3xl"
+              className="h-28 w-28 items-center justify-center rounded-3xl"
             >
-              <UserPlus size={52} color="#ffffff" />
+              <UserPlus size={64} color="#ffffff" />
             </LinearGradient>
           </View>
 
           <View className="w-full rounded-3xl border border-[#c1c7d3] bg-white p-6">
             <Text
-              className="text-[#191c21] text-[36px] font-bold mb-2"
+              className="text-[#191c21] text-[42px] font-bold mb-2"
               style={{ textAlign: rtl.textAlign }}
             >
               צור חשבון חדש
             </Text>
             <Text
-              className="text-[#414751] text-lg mb-8"
+              className="text-[#414751] text-xl mb-8"
               style={{ textAlign: rtl.textAlign }}
             >
               הירשם כדי להתחיל להשתמש באפליקציה
@@ -198,18 +220,18 @@ export default function SignUpScreen() {
             {/* שדה אימייל */}
             <View className="mb-5">
               <View className={`${tw.flexRow} items-center gap-2 mb-2`}>
-                <View className="rounded-lg bg-[#d3e3ff] p-1.5">
-                  <Mail size={18} color="#005da7" />
+                <View className="rounded-lg bg-[#d3e3ff] p-2">
+                  <Mail size={24} color="#005da7" />
                 </View>
                 <Text
-                  className="text-[#191c21] text-base font-bold"
+                  className="text-[#191c21] text-lg font-bold"
                   style={{ textAlign: rtl.textAlign }}
                 >
                   כתובת אימייל
                 </Text>
               </View>
               <TextInput
-                className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-4 text-[#191c21] text-lg"
+                className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-4 text-[#191c21] text-xl"
                 style={{ textAlign: rtl.textAlign }}
                 value={email}
                 onChangeText={setEmail}
@@ -225,11 +247,11 @@ export default function SignUpScreen() {
             {/* שדה סיסמה */}
             <View className="mb-5">
               <View className={`${tw.flexRow} items-center gap-2 mb-2`}>
-                <View className="rounded-lg bg-[#d3e3ff] p-1.5">
-                  <Lock size={18} color="#005da7" />
+                <View className="rounded-lg bg-[#d3e3ff] p-2">
+                  <Lock size={24} color="#005da7" />
                 </View>
                 <Text
-                  className="text-[#191c21] text-base font-bold"
+                  className="text-[#191c21] text-lg font-bold"
                   style={{ textAlign: rtl.textAlign }}
                 >
                   סיסמה
@@ -237,7 +259,7 @@ export default function SignUpScreen() {
               </View>
               <View className="relative">
                 <TextInput
-                  className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-4 pl-12 text-[#191c21] text-lg"
+                  className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-4 pl-12 text-[#191c21] text-xl"
                   style={{ textAlign: rtl.textAlign }}
                   value={password}
                   onChangeText={setPassword}
@@ -337,17 +359,40 @@ export default function SignUpScreen() {
                 colors={['#00457f', '#005da7', '#1b6d24']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                className={`${tw.flexRow} items-center justify-center gap-2 py-5`}
+                className={`${tw.flexRow} items-center justify-center gap-2 py-6`}
               >
                 {loading ? (
                   <ActivityIndicator color="#ffffff" />
                 ) : (
                   <>
-                    <Text className="text-white text-xl font-bold">הירשם</Text>
-                    <UserPlus size={24} color="#ffffff" />
+                    <Text className="text-white text-2xl font-bold">הירשם</Text>
+                    <UserPlus size={28} color="#ffffff" />
                   </>
                 )}
               </LinearGradient>
+            </TouchableOpacity>
+
+            {/* מפריד "או" */}
+            <View className={`${tw.flexRow} items-center gap-3 my-6`}>
+              <View className="h-px flex-1 bg-[#c1c7d3]" />
+              <Text className="text-[#727782] text-base font-medium">או</Text>
+              <View className="h-px flex-1 bg-[#c1c7d3]" />
+            </View>
+
+            {/* כפתור הרשמה עם Google */}
+            <TouchableOpacity
+              accessibilityLabel="הרשמה עם חשבון Google"
+              accessibilityRole="button"
+              accessible={true}
+              className={`${tw.flexRow} items-center justify-center gap-3 rounded-2xl border-2 border-[#c1c7d3] bg-white py-5 ${loading || isPreviewMode ? 'opacity-60' : ''}`}
+              disabled={loading || isPreviewMode}
+              onPress={onGooglePress}
+              activeOpacity={0.85}
+            >
+              <GoogleGlyph />
+              <Text className="text-[#191c21] text-xl font-bold">
+                המשך עם Google
+              </Text>
             </TouchableOpacity>
 
             {/* קישור להתחברות */}
@@ -373,5 +418,29 @@ export default function SignUpScreen() {
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
+  );
+}
+
+// לוגו Google הרשמי בארבעת הצבעים.
+function GoogleGlyph() {
+  return (
+    <Svg width={26} height={26} viewBox="0 0 48 48">
+      <Path
+        fill="#EA4335"
+        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+      />
+      <Path
+        fill="#4285F4"
+        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+      />
+      <Path
+        fill="#FBBC05"
+        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+      />
+      <Path
+        fill="#34A853"
+        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+      />
+    </Svg>
   );
 }
