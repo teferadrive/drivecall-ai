@@ -8,7 +8,10 @@ import com.facebook.react.uimanager.ViewManager
 class AndroidCallStatePackage : ReactPackage {
   override fun createNativeModules(
     reactContext: ReactApplicationContext
-  ): List<NativeModule> = listOf(AndroidCallStateModule(reactContext))
+  ): List<NativeModule> = listOf(
+    AndroidCallStateModule(reactContext),
+    RecordingServiceModule(reactContext)
+  )
 
   override fun createViewManagers(
     reactContext: ReactApplicationContext

@@ -10,6 +10,10 @@ import {
   addCallEndedListener,
   addCallStartedListener,
 } from '@/lib/androidCallDetection';
+import {
+  startRecordingService,
+  stopRecordingService,
+} from '@/lib/recordingService';
 
 // מצב מקליט השיעור:
 // - idle: לא מקליט
@@ -117,6 +121,9 @@ export function useLessonRecorder(): LessonRecorder {
     segmentBaseRef.current = 0;
     setRecordingUri(null);
 
+    // הפעלת השירות הקדמי כדי שההקלטה תשרוד כשהאפליקציה ברקע.
+    await startRecordingService();
+
     await recorder.prepareToRecordAsync();
     recorder.record();
     setStatus('recording');
@@ -128,6 +135,7 @@ export function useLessonRecorder(): LessonRecorder {
       return null;
     }
     await recorder.stop();
+    await stopRecordingService();
     const uri = recorder.uri ?? null;
     setRecordingUri(uri);
     setStatus('idle');

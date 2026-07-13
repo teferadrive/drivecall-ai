@@ -28,7 +28,9 @@
         "READ_CALL_LOG",
         "POST_NOTIFICATIONS",
         "CALL_PHONE",
-        "RECORD_AUDIO"
+        "RECORD_AUDIO",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_MICROPHONE"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
