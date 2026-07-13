@@ -82,6 +82,17 @@ export default function HomePage() {
     } catch {
       // The UI should still open even if Convex is offline or not deployed yet.
     }
+
+    // פתיחת מסך "אחרי שיחה" לתיעוד ידני מהיר של השיחה במספר הנוסף.
+    router.push({
+      pathname: '/(authenticated)/after-call',
+      params: {
+        contactName: latestExternalNumberCall.name,
+        direction: 'incoming',
+        endedAt: String(Date.now()),
+        source: 'external-number',
+      },
+    });
   };
 
   return (
