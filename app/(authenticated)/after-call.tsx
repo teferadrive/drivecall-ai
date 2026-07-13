@@ -92,22 +92,16 @@ export default function AfterCallScreen() {
             <InfoRow label="מקור" value={source} />
             <InfoRow label="סוג שיחה" value={direction} />
             <InfoRow label="משך" value={formatDuration(durationSeconds)} />
-            <InfoRow
-              label="תאריך ושעה"
-              value={formatDateTime(endedAt)}
-            />
-            <InfoRow
-              label="לקוח"
-              value="חדש או קיים לפי הטלפון"
-            />
+            <InfoRow label="תאריך ושעה" value={formatDateTime(endedAt)} />
+            <InfoRow label="לקוח" value="חדש או קיים לפי הטלפון" />
           </View>
 
           <View className="mt-5 rounded-xl border border-[#88d982] bg-[#a0f399] p-4">
             <View className={`${tw.flexRow} items-start gap-3`}>
               <Bot size={22} color="#1b6d24" />
               <Text className="flex-1 text-right text-sm leading-6 text-[#002204]">
-                מומלץ לתעד את השיחה, לשלוח הודעת המשך, ואם
-                אין מענה לקבוע תזכורת חזרה.
+                מומלץ לתעד את השיחה, לשלוח הודעת המשך, ואם אין מענה לקבוע תזכורת
+                חזרה.
               </Text>
             </View>
           </View>

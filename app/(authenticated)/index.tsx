@@ -10,6 +10,7 @@ import {
   externalNumberFlow,
   latestCall,
   latestExternalNumberCall,
+  type QuickAction,
   quickActions,
   readyMessages,
 } from '@/constants/callAssistantCrm';
@@ -95,6 +96,23 @@ export default function HomePage() {
     });
   };
 
+  // ניתוב פעולה מהירה ליעד המתאים: תיעוד שיחה, מסך לקוחות או יומן.
+  // פעולות כמו WhatsApp/SMS/חיוג דורשות לקוח, ולכן מובילות למסך הלקוחות
+  // שם נמצאים כפתורי הפעולה האמיתיים לכל לקוח.
+  const handleQuickAction = (target: QuickAction['target']) => {
+    if (target === 'external-call') {
+      handleExternalNumberCall();
+      return;
+    }
+
+    if (target === 'calendar') {
+      router.push('/(authenticated)/page2');
+      return;
+    }
+
+    router.push('/(authenticated)/page1');
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-[#f8f9ff]" edges={['top']}>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
@@ -112,8 +130,8 @@ export default function HomePage() {
                   עוזר שיחות חכם
                 </Text>
                 <Text className="mt-2 text-right text-base leading-6 text-[#d3e3ff]">
-                  CRM מהיר למורה נהיגה: שיחות, לידים,
-                  תלמידים, שיעורים ותזכורות במקום אחד.
+                  CRM מהיר למורה נהיגה: שיחות, לידים, תלמידים, שיעורים ותזכורות
+                  במקום אחד.
                 </Text>
               </View>
             </View>
@@ -248,9 +266,12 @@ export default function HomePage() {
           />
           <View className={`${tw.flexRow} mb-5 flex-wrap gap-3`}>
             {primaryActions.map((action) => (
-              <View
+              <TouchableOpacity
+                accessibilityRole="button"
+                activeOpacity={0.7}
                 className="min-h-[92px] min-w-[150px] flex-1 rounded-xl border border-[#c1c7d3] bg-white p-3"
                 key={action.label}
+                onPress={() => handleQuickAction(action.target)}
               >
                 <View className={`${tw.flexRow} items-start gap-3`}>
                   <View className={`rounded-md p-2 ${toneClass(action.tone)}`}>
@@ -265,7 +286,7 @@ export default function HomePage() {
                     </Text>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
 

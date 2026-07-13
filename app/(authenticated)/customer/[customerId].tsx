@@ -105,10 +105,7 @@ export default function CustomerDetailsScreen() {
       });
       Alert.alert('נשמר', 'פרטי הלקוח עודכנו.');
     } catch {
-      Alert.alert(
-        'שגיאה',
-        'לא הצלחתי לשמור את פרטי הלקוח.'
-      );
+      Alert.alert('שגיאה', 'לא הצלחתי לשמור את פרטי הלקוח.');
     } finally {
       setIsSaving(false);
     }
@@ -118,10 +115,7 @@ export default function CustomerDetailsScreen() {
     const trimmedNote = quickNote.trim();
 
     if (!(customerId && trimmedNote)) {
-      Alert.alert(
-        'חסר מידע',
-        'כתוב הערה קצרה לפני השמירה.'
-      );
+      Alert.alert('חסר מידע', 'כתוב הערה קצרה לפני השמירה.');
       return;
     }
 
@@ -295,9 +289,7 @@ export default function CustomerDetailsScreen() {
               ) : (
                 <FileText size={18} color="#ffffff" />
               )}
-              <Text className="text-base font-bold text-white">
-                שמירת הערה
-              </Text>
+              <Text className="text-base font-bold text-white">שמירת הערה</Text>
             </TouchableOpacity>
           </View>
 
@@ -313,9 +305,8 @@ export default function CustomerDetailsScreen() {
               המלצת AI
             </Text>
             <Text className="mt-2 text-right text-sm leading-6 text-[#002204]">
-              לפי הסטטוס והפעילות האחרונה, מומלץ לשלוח
-              הודעת המשך ולקבוע תזכורת להמשך טיפול אם
-              אין תגובה.
+              לפי הסטטוס והפעילות האחרונה, מומלץ לשלוח הודעת המשך ולקבוע תזכורת
+              להמשך טיפול אם אין תגובה.
             </Text>
           </View>
 

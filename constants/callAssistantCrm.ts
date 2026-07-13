@@ -53,11 +53,18 @@ export type Customer = {
   preferredCallSource: CallSource;
 };
 
+// יעד הניווט של פעולה מהירה בדשבורד:
+// - 'external-call': מסך תיעוד שיחה במספר הנוסף (after-call)
+// - 'customers': מסך הלקוחות (שם נמצאים כפתורי WhatsApp/SMS/חיוג/קישורים)
+// - 'calendar': מסך היומן (שיעורים ותזכורות)
+export type QuickActionTarget = 'external-call' | 'customers' | 'calendar';
+
 export type QuickAction = {
   label: string;
   detail: string;
   icon: LucideIcon;
   tone: 'primary' | 'neutral' | 'success' | 'danger';
+  target: QuickActionTarget;
 };
 
 export type DashboardMetric = {
@@ -228,78 +235,91 @@ export const quickActions: QuickAction[] = [
     detail: 'תיעוד שיחה ידני חכם',
     icon: Smartphone,
     tone: 'primary',
+    target: 'external-call',
   },
   {
     label: 'שליחת WhatsApp',
     detail: 'פתיחת הודעה מוכנה',
     icon: MessageCircle,
     tone: 'primary',
+    target: 'customers',
   },
   {
     label: 'שליחת SMS',
     detail: 'הודעת המשך קצרה',
     icon: Send,
     tone: 'neutral',
+    target: 'customers',
   },
   {
     label: 'קישור לאפליקציה',
     detail: 'אפליקציית תיאוריה',
     icon: Link2,
     tone: 'success',
+    target: 'customers',
   },
   {
     label: 'קישור להרשמה',
     detail: 'טופס תלמיד חדש',
     icon: FileText,
     tone: 'success',
+    target: 'customers',
   },
   {
     label: 'קביעת שיעור',
     detail: 'פתיחת יומן',
     icon: CalendarClock,
     tone: 'primary',
+    target: 'calendar',
   },
   {
     label: 'מבחן תיאוריה',
     detail: 'הוספת תזכורת',
     icon: BookOpenCheck,
     tone: 'neutral',
+    target: 'calendar',
   },
   {
     label: 'תזכורת',
     detail: 'מעקב אוטומטי',
     icon: Bell,
     tone: 'neutral',
+    target: 'calendar',
   },
   {
     label: 'התקשרות חוזרת',
     detail: 'חיוג מהיר',
     icon: Phone,
     tone: 'primary',
+    target: 'customers',
   },
   {
     label: 'פתיחת Waze',
     detail: 'ניווט לכתובת',
     icon: Navigation,
     tone: 'neutral',
+    target: 'customers',
   },
   {
     label: 'Google Maps',
     detail: 'פתיחת מיקום',
     icon: MapIcon,
     tone: 'neutral',
+    target: 'customers',
   },
   {
     label: 'שמירת איש קשר',
     detail: 'יצירה באנשי קשר',
     icon: Save,
     tone: 'success',
+    target: 'customers',
   },
   {
     label: 'מחיקת הליד',
     detail: 'מחיקה לאחר אישור',
     icon: Trash2,
     tone: 'danger',
+    target: 'customers',
   },
 ];
 

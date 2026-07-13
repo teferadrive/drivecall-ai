@@ -143,10 +143,7 @@ export default function OperationsScreen() {
 
   const handleCreateLesson = async () => {
     if (!activeCustomerId) {
-      Alert.alert(
-        'אין לקוח',
-        'צריך לבחור לקוח לפני קביעת שיעור.'
-      );
+      Alert.alert('אין לקוח', 'צריך לבחור לקוח לפני קביעת שיעור.');
       return;
     }
 
@@ -154,10 +151,7 @@ export default function OperationsScreen() {
     const parsedDuration = Number.parseInt(durationMinutes, 10);
 
     if (!startsAt || Number.isNaN(parsedDuration) || parsedDuration < 15) {
-      Alert.alert(
-        'פרטי שיעור לא תקינים',
-        'בדוק תאריך, שעה ומשך שיעור.'
-      );
+      Alert.alert('פרטי שיעור לא תקינים', 'בדוק תאריך, שעה ומשך שיעור.');
       return;
     }
 
@@ -200,10 +194,7 @@ export default function OperationsScreen() {
 
   const handleCreateReminder = async () => {
     if (!activeCustomerId) {
-      Alert.alert(
-        'אין לקוח',
-        'צריך לבחור לקוח לפני יצירת תזכורת.'
-      );
+      Alert.alert('אין לקוח', 'צריך לבחור לקוח לפני יצירת תזכורת.');
       return;
     }
 
@@ -239,10 +230,7 @@ export default function OperationsScreen() {
     try {
       await completeReminder({ reminderId });
     } catch {
-      Alert.alert(
-        'שגיאה',
-        'לא הצלחתי לסמן תזכורת כבוצעה.'
-      );
+      Alert.alert('שגיאה', 'לא הצלחתי לסמן תזכורת כבוצעה.');
     }
   };
 
@@ -254,8 +242,7 @@ export default function OperationsScreen() {
             יומן ודוחות
           </Text>
           <Text className="mt-2 text-right text-sm leading-6 text-[#414751]">
-            קביעת שיעורים, תזכורות, מעקב יומי
-            וסטטיסטיקות עבודה.
+            קביעת שיעורים, תזכורות, מעקב יומי וסטטיסטיקות עבודה.
           </Text>
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">
@@ -265,8 +252,7 @@ export default function OperationsScreen() {
             {customers === undefined && <ActivityIndicator color="#005da7" />}
             {customerOptions.length === 0 && customers !== undefined && (
               <Text className="text-right text-sm text-[#727782]">
-                אין לקוחות עדיין. צור ליד במסך הלקוחות
-                כדי לקבוע שיעור.
+                אין לקוחות עדיין. צור ליד במסך הלקוחות כדי לקבוע שיעור.
               </Text>
             )}
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -371,11 +357,7 @@ export default function OperationsScreen() {
                     onPress={() => setReminderDays(days)}
                   >
                     <Text className="text-center text-sm font-bold text-[#191c21]">
-                      {days === 0
-                        ? 'היום'
-                        : days === 1
-                          ? 'מחר'
-                          : 'עוד 3 ימים'}
+                      {days === 0 ? 'היום' : days === 1 ? 'מחר' : 'עוד 3 ימים'}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -490,9 +472,7 @@ export default function OperationsScreen() {
                     className="min-h-[40px] justify-center rounded-xl bg-[#1b6d24] px-3"
                     onPress={() => handleCompleteReminder(reminder._id)}
                   >
-                    <Text className="text-xs font-bold text-white">
-                      בוצע
-                    </Text>
+                    <Text className="text-xs font-bold text-white">בוצע</Text>
                   </TouchableOpacity>
                 </View>
               ))}
@@ -568,9 +548,8 @@ export default function OperationsScreen() {
             <View className={`${tw.flexRow} items-start gap-3`}>
               <CheckCircle2 size={24} color="#005da7" />
               <Text className="flex-1 text-right text-sm leading-6 text-[#414751]">
-                סנכרון Google Calendar הוא השלב הבא: כרגע
-                השיעורים נשמרים ביומן הפנימי, ובהמשך
-                אפשר להוסיף חיבור לחשבון Google.
+                סנכרון Google Calendar הוא השלב הבא: כרגע השיעורים נשמרים ביומן
+                הפנימי, ובהמשך אפשר להוסיף חיבור לחשבון Google.
               </Text>
             </View>
           </View>

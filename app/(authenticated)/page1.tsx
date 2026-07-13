@@ -100,10 +100,7 @@ export default function CrmScreen() {
     const trimmedPhone = newPhone.trim();
 
     if (!trimmedName || !trimmedPhone) {
-      Alert.alert(
-        'חסר מידע',
-        'צריך למלא שם וטלפון כדי ליצור ליד.'
-      );
+      Alert.alert('חסר מידע', 'צריך למלא שם וטלפון כדי ליצור ליד.');
       return;
     }
 
@@ -121,10 +118,7 @@ export default function CrmScreen() {
       setNewName('');
       setNewPhone('');
     } catch {
-      Alert.alert(
-        'שגיאה',
-        'לא הצלחתי לשמור את הליד. נסה שוב.'
-      );
+      Alert.alert('שגיאה', 'לא הצלחתי לשמור את הליד. נסה שוב.');
     } finally {
       setIsCreating(false);
     }
@@ -133,10 +127,7 @@ export default function CrmScreen() {
   const handleMoveStatus = useCallback(
     async (customer: DisplayCustomer) => {
       if (!customer._id) {
-        Alert.alert(
-          'מצב דמו',
-          'שמירה זמינה רק ללקוחות שנוצרו במסד הנתונים.'
-        );
+        Alert.alert('מצב דמו', 'שמירה זמינה רק ללקוחות שנוצרו במסד הנתונים.');
         return;
       }
 
@@ -159,10 +150,7 @@ export default function CrmScreen() {
   const handleDeleteCustomer = useCallback(
     (customer: DisplayCustomer) => {
       if (!customer._id) {
-        Alert.alert(
-          'מצב דמו',
-          'מחיקה זמינה רק ללקוחות שנוצרו במסד הנתונים.'
-        );
+        Alert.alert('מצב דמו', 'מחיקה זמינה רק ללקוחות שנוצרו במסד הנתונים.');
         return;
       }
 
@@ -279,8 +267,7 @@ export default function CrmScreen() {
 
   const handleSms = useCallback(
     async (customer: DisplayCustomer) => {
-      const message =
-        'היי, שמחתי לדבר איתך. אפשר להמשיך מכאן לתיאום שיעור.';
+      const message = 'היי, שמחתי לדבר איתך. אפשר להמשיך מכאן לתיאום שיעור.';
       await recordEvent(customer, 'message', 'נשלח SMS', message);
       await openUrl(
         `sms:${normalizePhone(customer.phone)}?body=${encodeURIComponent(message)}`,
@@ -292,8 +279,7 @@ export default function CrmScreen() {
 
   const handleWhatsApp = useCallback(
     async (customer: DisplayCustomer) => {
-      const message =
-        'היי, שמחתי לדבר איתך. מצורף קישור הרשמה לשיעורי נהיגה.';
+      const message = 'היי, שמחתי לדבר איתך. מצורף קישור הרשמה לשיעורי נהיגה.';
       const targetPhone = normalizePhoneForWhatsApp(customer.phone);
       const encodedMessage = encodeURIComponent(message);
 
@@ -315,12 +301,7 @@ export default function CrmScreen() {
   const handleMaps = useCallback(
     async (customer: DisplayCustomer) => {
       const query = encodeURIComponent(customer.address || customer.name);
-      await recordEvent(
-        customer,
-        'reminder',
-        'נפתח ניווט',
-        customer.address
-      );
+      await recordEvent(customer, 'reminder', 'נפתח ניווט', customer.address);
       await openUrl(
         `https://www.google.com/maps/search/?api=1&query=${query}`,
         'לא ניתן לפתוח מפות במכשיר הזה.'
@@ -332,12 +313,7 @@ export default function CrmScreen() {
   const handleWaze = useCallback(
     async (customer: DisplayCustomer) => {
       const query = encodeURIComponent(customer.address || customer.name);
-      await recordEvent(
-        customer,
-        'reminder',
-        'נפתח Waze',
-        customer.address
-      );
+      await recordEvent(customer, 'reminder', 'נפתח Waze', customer.address);
       await openUrl(
         `https://waze.com/ul?q=${query}&navigate=yes`,
         'לא ניתן לפתוח Waze במכשיר הזה.'
@@ -354,17 +330,16 @@ export default function CrmScreen() {
             CRM תלמידים
           </Text>
           <Text className="mt-2 text-right text-sm leading-6 text-[#414751]">
-            ניהול לידים, תלמידים פעילים, היסטוריית
-            שיחות, הודעות, שיעורים, תשלומים ומסמכים.
+            ניהול לידים, תלמידים פעילים, היסטוריית שיחות, הודעות, שיעורים,
+            תשלומים ומסמכים.
           </Text>
           <View className="mt-4 rounded-xl border border-[#88d982] bg-[#a0f399] p-3">
             <Text className="text-right text-sm font-bold text-[#002204]">
               WhatsApp עבודה: {defaultWhatsAppSenderNumber}
             </Text>
             <Text className="mt-1 text-right text-xs leading-5 text-[#002204]/80">
-              אם יש כמה אפליקציות WhatsApp במכשיר, Android
-              יפתח את האפליקציה שמוגדרת כברירת מחדל
-              לקישורי WhatsApp.
+              אם יש כמה אפליקציות WhatsApp במכשיר, Android יפתח את האפליקציה
+              שמוגדרת כברירת מחדל לקישורי WhatsApp.
             </Text>
           </View>
 
@@ -441,9 +416,7 @@ export default function CrmScreen() {
                 }`}
                 onPress={() => setSelectedStatus(undefined)}
               >
-                <Text className="text-sm font-medium text-[#191c21]">
-                  הכל
-                </Text>
+                <Text className="text-sm font-medium text-[#191c21]">הכל</Text>
               </TouchableOpacity>
               {leadStatuses.map((status) => (
                 <TouchableOpacity
@@ -468,8 +441,7 @@ export default function CrmScreen() {
 
           {convexCustomers === undefined && (
             <Text className="mt-3 text-right text-xs text-[#727782]">
-              טוען נתונים מ-Convex. בינתיים מוצגים נתוני
-              דמו.
+              טוען נתונים מ-Convex. בינתיים מוצגים נתוני דמו.
             </Text>
           )}
 
@@ -522,8 +494,7 @@ export default function CrmScreen() {
                   <InfoRow
                     label="פעולה מומלצת"
                     value={
-                      customer.nextAction ??
-                      'לשלוח הודעת המשך ולקבוע תזכורת.'
+                      customer.nextAction ?? 'לשלוח הודעת המשך ולקבוע תזכורת.'
                     }
                   />
                 </View>
@@ -543,10 +514,7 @@ export default function CrmScreen() {
                       customer.documentsCount ?? customer.documents
                     )}
                   />
-                  <MiniStat
-                    label="יתרה"
-                    value={`₪${customer.balance ?? 0}`}
-                  />
+                  <MiniStat label="יתרה" value={`₪${customer.balance ?? 0}`} />
                 </View>
 
                 <View className={`${tw.flexRow} mt-4 gap-2`}>
@@ -629,8 +597,7 @@ export default function CrmScreen() {
                   אין לקוחות עדיין
                 </Text>
                 <Text className="mt-2 text-center text-sm leading-6 text-[#727782]">
-                  הוסף ליד מהיר כדי להתחיל לעבוד עם
-                  נתונים אמיתיים.
+                  הוסף ליד מהיר כדי להתחיל לעבוד עם נתונים אמיתיים.
                 </Text>
               </View>
             )}
