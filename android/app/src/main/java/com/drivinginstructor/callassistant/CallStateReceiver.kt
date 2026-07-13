@@ -26,11 +26,15 @@ class CallStateReceiver : BroadcastReceiver() {
         currentDirection = "incoming"
         callStartedAt = 0L
         wasInCall = false
+        // שיחה נכנסת מתחילה לצלצל - יש להשהות הקלטה מיד.
+        AndroidCallStateModule.activeModule?.emitCallStarted(phoneNumber, "incoming")
       }
 
       TelephonyManager.EXTRA_STATE_OFFHOOK -> {
         if (currentDirection == null) {
           currentDirection = "outgoing"
+          // שיחה יוצאת התחילה (לא עברה דרך RINGING) - להשהות הקלטה.
+          AndroidCallStateModule.activeModule?.emitCallStarted(phoneNumber, "outgoing")
         }
         if (phoneNumber != null) {
           lastPhoneNumber = phoneNumber

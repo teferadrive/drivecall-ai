@@ -66,6 +66,18 @@ class AndroidCallStateModule(
       .emit("onCallEnded", payload)
   }
 
+  fun emitCallStarted(phoneNumber: String?, direction: String) {
+    val payload = Arguments.createMap().apply {
+      putString("phoneNumber", phoneNumber ?: "")
+      putString("direction", direction)
+      putDouble("startedAt", System.currentTimeMillis().toDouble())
+    }
+
+    reactContext
+      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+      .emit("onCallStarted", payload)
+  }
+
   companion object {
     var activeModule: AndroidCallStateModule? = null
       private set

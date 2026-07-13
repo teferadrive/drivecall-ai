@@ -24,7 +24,24 @@ const nativeModule = NativeModules.AndroidCallStateModule as
   | undefined;
 
 let subscription: { remove: () => void } | undefined;
+let startSubscription: { remove: () => void } | undefined;
 let didInitialize = false;
+
+// מנויים חיצוניים לאירועי תחילת/סיום שיחה (למשל מקליט השיעור).
+// מאפשר לרכיבים אחרים להגיב לשיחות בלי לגעת בלוגיקת הניווט.
+type CallListener = () => void;
+const callStartedListeners = new Set<CallListener>();
+const callEndedListeners = new Set<CallListener>();
+
+export function addCallStartedListener(listener: CallListener) {
+  callStartedListeners.add(listener);
+  return () => callStartedListeners.delete(listener);
+}
+
+export function addCallEndedListener(listener: CallListener) {
+  callEndedListeners.add(listener);
+  return () => callEndedListeners.delete(listener);
+}
 
 export async function initializeAndroidCallDetection() {
   if (Platform.OS !== 'android') {
@@ -61,9 +78,19 @@ export async function initializeAndroidCallDetection() {
     NativeModules.AndroidCallStateModule
   );
 
+  startSubscription = eventEmitter.addListener('onCallStarted', () => {
+    for (const listener of callStartedListeners) {
+      listener();
+    }
+  });
+
   subscription = eventEmitter.addListener(
     'onCallEnded',
     (payload: NativeCallEndedPayload) => {
+      for (const listener of callEndedListeners) {
+        listener();
+      }
+
       router.push({
         pathname: '/(authenticated)/after-call',
         params: {
@@ -90,6 +117,8 @@ export async function initializeAndroidCallDetection() {
 export async function stopAndroidCallDetection() {
   subscription?.remove();
   subscription = undefined;
+  startSubscription?.remove();
+  startSubscription = undefined;
 
   if (Platform.OS === 'android' && nativeModule?.stopListening) {
     await nativeModule.stopListening();

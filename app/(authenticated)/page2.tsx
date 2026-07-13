@@ -25,6 +25,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LessonRecorderCard } from '@/components/LessonRecorderCard';
 import { reports } from '@/constants/callAssistantCrm';
 import { api } from '@/convex/_generated/api';
 import type { Id } from '@/convex/_generated/dataModel';
@@ -273,6 +274,10 @@ export default function OperationsScreen() {
           <Text className="mt-2 text-right text-sm leading-6 text-[#414751]">
             קביעת שיעורים, תזכורות, מעקב יומי וסטטיסטיקות עבודה.
           </Text>
+
+          <View className="mt-5">
+            <LessonRecorderCard />
+          </View>
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">
             <Text className="mb-3 text-right text-xl font-bold text-[#191c21]">
