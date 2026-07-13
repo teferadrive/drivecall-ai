@@ -193,45 +193,45 @@ export default function SignUpScreen() {
         )}
 
         <View className="flex-1 justify-center px-6">
-          {/* אייקון גדול בגרדיאנט חי */}
-          <View className="items-center mb-6">
+          {/* אייקון בגרדיאנט חי */}
+          <View className="items-center mb-5">
             <LinearGradient
               colors={['#00457f', '#005da7', '#1b6d24']}
-              className="h-28 w-28 items-center justify-center rounded-3xl"
+              className="h-20 w-20 items-center justify-center rounded-3xl"
             >
-              <UserPlus size={64} color="#ffffff" />
+              <UserPlus size={44} color="#ffffff" />
             </LinearGradient>
           </View>
 
           <View className="w-full rounded-3xl border border-[#c1c7d3] bg-white p-6">
             <Text
-              className="text-[#191c21] text-[42px] font-bold mb-2"
+              className="text-[#191c21] text-3xl font-bold mb-2"
               style={{ textAlign: rtl.textAlign }}
             >
               צור חשבון חדש
             </Text>
             <Text
-              className="text-[#414751] text-xl mb-8"
+              className="text-[#414751] text-base mb-6"
               style={{ textAlign: rtl.textAlign }}
             >
               הירשם כדי להתחיל להשתמש באפליקציה
             </Text>
 
             {/* שדה אימייל */}
-            <View className="mb-5">
+            <View className="mb-4">
               <View className={`${tw.flexRow} items-center gap-2 mb-2`}>
-                <View className="rounded-lg bg-[#d3e3ff] p-2">
-                  <Mail size={24} color="#005da7" />
+                <View className="rounded-lg bg-[#d3e3ff] p-1.5">
+                  <Mail size={20} color="#005da7" />
                 </View>
                 <Text
-                  className="text-[#191c21] text-lg font-bold"
+                  className="text-[#191c21] text-base font-bold"
                   style={{ textAlign: rtl.textAlign }}
                 >
                   כתובת אימייל
                 </Text>
               </View>
               <TextInput
-                className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-4 text-[#191c21] text-xl"
+                className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-3.5 text-[#191c21] text-lg"
                 style={{ textAlign: rtl.textAlign }}
                 value={email}
                 onChangeText={setEmail}
@@ -245,13 +245,13 @@ export default function SignUpScreen() {
             </View>
 
             {/* שדה סיסמה */}
-            <View className="mb-5">
+            <View className="mb-4">
               <View className={`${tw.flexRow} items-center gap-2 mb-2`}>
-                <View className="rounded-lg bg-[#d3e3ff] p-2">
-                  <Lock size={24} color="#005da7" />
+                <View className="rounded-lg bg-[#d3e3ff] p-1.5">
+                  <Lock size={20} color="#005da7" />
                 </View>
                 <Text
-                  className="text-[#191c21] text-lg font-bold"
+                  className="text-[#191c21] text-base font-bold"
                   style={{ textAlign: rtl.textAlign }}
                 >
                   סיסמה
@@ -259,7 +259,7 @@ export default function SignUpScreen() {
               </View>
               <View className="relative">
                 <TextInput
-                  className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-4 pl-12 text-[#191c21] text-xl"
+                  className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-3.5 pl-12 text-[#191c21] text-lg"
                   style={{ textAlign: rtl.textAlign }}
                   value={password}
                   onChangeText={setPassword}
@@ -359,21 +359,21 @@ export default function SignUpScreen() {
                 colors={['#00457f', '#005da7', '#1b6d24']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                className={`${tw.flexRow} items-center justify-center gap-2 py-6`}
+                className={`${tw.flexRow} items-center justify-center gap-2 py-4`}
               >
                 {loading ? (
                   <ActivityIndicator color="#ffffff" />
                 ) : (
                   <>
-                    <Text className="text-white text-2xl font-bold">הירשם</Text>
-                    <UserPlus size={28} color="#ffffff" />
+                    <Text className="text-white text-xl font-bold">הירשם</Text>
+                    <UserPlus size={24} color="#ffffff" />
                   </>
                 )}
               </LinearGradient>
             </TouchableOpacity>
 
             {/* מפריד "או" */}
-            <View className={`${tw.flexRow} items-center gap-3 my-6`}>
+            <View className={`${tw.flexRow} items-center gap-3 my-5`}>
               <View className="h-px flex-1 bg-[#c1c7d3]" />
               <Text className="text-[#727782] text-base font-medium">או</Text>
               <View className="h-px flex-1 bg-[#c1c7d3]" />
@@ -384,13 +384,13 @@ export default function SignUpScreen() {
               accessibilityLabel="הרשמה עם חשבון Google"
               accessibilityRole="button"
               accessible={true}
-              className={`${tw.flexRow} items-center justify-center gap-3 rounded-2xl border-2 border-[#c1c7d3] bg-white py-5 ${loading || isPreviewMode ? 'opacity-60' : ''}`}
+              className={`${tw.flexRow} items-center justify-center gap-3 rounded-2xl border-2 border-[#c1c7d3] bg-white py-4 ${loading || isPreviewMode ? 'opacity-60' : ''}`}
               disabled={loading || isPreviewMode}
               onPress={onGooglePress}
               activeOpacity={0.85}
             >
               <GoogleGlyph />
-              <Text className="text-[#191c21] text-xl font-bold">
+              <Text className="text-[#191c21] text-lg font-bold">
                 המשך עם Google
               </Text>
             </TouchableOpacity>
