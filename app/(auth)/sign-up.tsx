@@ -1,7 +1,8 @@
 import { useAuthActions } from '@convex-dev/auth/react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import { Check, Eye, EyeOff } from 'lucide-react-native';
+import { Check, Eye, EyeOff, Lock, Mail, UserPlus } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -136,7 +137,7 @@ export default function SignUpScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-black">
+    <SafeAreaView className="flex-1 bg-[#f8f9ff]">
       {/* כפתור יציאה במצב תצוגה מקדימה */}
       {isPreviewMode && <PreviewModeBanner onClose={() => router.back()} />}
 
@@ -163,22 +164,32 @@ export default function SignUpScreen() {
         {/* באנר מצב תצוגה מקדימה */}
         {isPreviewMode && (
           <View className="p-3 bg-yellow-500/20 border-b border-yellow-500/50">
-            <Text className="text-yellow-400 text-center text-sm font-medium">
+            <Text className="text-yellow-600 text-center text-sm font-medium">
               מצב תצוגה מקדימה - הרשמה מושבתת
             </Text>
           </View>
         )}
 
         <View className="flex-1 justify-center px-6">
-          <View className="w-full">
+          {/* אייקון גדול בגרדיאנט חי */}
+          <View className="items-center mb-6">
+            <LinearGradient
+              colors={['#00457f', '#005da7', '#1b6d24']}
+              className="h-24 w-24 items-center justify-center rounded-3xl"
+            >
+              <UserPlus size={52} color="#ffffff" />
+            </LinearGradient>
+          </View>
+
+          <View className="w-full rounded-3xl border border-[#c1c7d3] bg-white p-6">
             <Text
-              className="text-white text-[32px] font-bold mb-2"
+              className="text-[#191c21] text-[36px] font-bold mb-2"
               style={{ textAlign: rtl.textAlign }}
             >
               צור חשבון חדש
             </Text>
             <Text
-              className="text-zinc-400 text-base mb-8"
+              className="text-[#414751] text-lg mb-8"
               style={{ textAlign: rtl.textAlign }}
             >
               הירשם כדי להתחיל להשתמש באפליקציה
@@ -186,19 +197,24 @@ export default function SignUpScreen() {
 
             {/* שדה אימייל */}
             <View className="mb-5">
-              <Text
-                className="text-white text-sm font-medium mb-2"
-                style={{ textAlign: rtl.textAlign }}
-              >
-                כתובת אימייל
-              </Text>
+              <View className={`${tw.flexRow} items-center gap-2 mb-2`}>
+                <View className="rounded-lg bg-[#d3e3ff] p-1.5">
+                  <Mail size={18} color="#005da7" />
+                </View>
+                <Text
+                  className="text-[#191c21] text-base font-bold"
+                  style={{ textAlign: rtl.textAlign }}
+                >
+                  כתובת אימייל
+                </Text>
+              </View>
               <TextInput
-                className="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-4 text-white text-base"
+                className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-4 text-[#191c21] text-lg"
                 style={{ textAlign: rtl.textAlign }}
                 value={email}
                 onChangeText={setEmail}
                 placeholder="example@gmail.com"
-                placeholderTextColor="#52525b"
+                placeholderTextColor="#727782"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -208,20 +224,25 @@ export default function SignUpScreen() {
 
             {/* שדה סיסמה */}
             <View className="mb-5">
-              <Text
-                className="text-white text-sm font-medium mb-2"
-                style={{ textAlign: rtl.textAlign }}
-              >
-                סיסמה
-              </Text>
+              <View className={`${tw.flexRow} items-center gap-2 mb-2`}>
+                <View className="rounded-lg bg-[#d3e3ff] p-1.5">
+                  <Lock size={18} color="#005da7" />
+                </View>
+                <Text
+                  className="text-[#191c21] text-base font-bold"
+                  style={{ textAlign: rtl.textAlign }}
+                >
+                  סיסמה
+                </Text>
+              </View>
               <View className="relative">
                 <TextInput
-                  className="bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-4 pl-12 text-white text-base"
+                  className="bg-[#e7e8ef] border-2 border-[#c1c7d3] rounded-xl px-4 py-4 pl-12 text-[#191c21] text-lg"
                   style={{ textAlign: rtl.textAlign }}
                   value={password}
                   onChangeText={setPassword}
                   placeholder="לפחות 6 תווים"
-                  placeholderTextColor="#52525b"
+                  placeholderTextColor="#727782"
                   secureTextEntry={!showPassword}
                   editable={!loading}
                 />
@@ -232,9 +253,9 @@ export default function SignUpScreen() {
                   hitSlop={8}
                 >
                   {showPassword ? (
-                    <EyeOff size={20} color="#71717a" />
+                    <EyeOff size={22} color="#005da7" />
                   ) : (
-                    <Eye size={20} color="#71717a" />
+                    <Eye size={22} color="#005da7" />
                   )}
                 </Pressable>
               </View>
@@ -247,16 +268,18 @@ export default function SignUpScreen() {
                 className="flex-row items-center gap-2"
                 disabled={loading}
               >
-                <Text className="text-zinc-300 text-sm">זכור אותי</Text>
+                <Text className="text-[#414751] text-base font-medium">
+                  זכור אותי
+                </Text>
                 <View
-                  className={`w-5 h-5 rounded border-2 items-center justify-center ${
+                  className={`w-6 h-6 rounded-md border-2 items-center justify-center ${
                     rememberMe
-                      ? 'bg-sky-400 border-sky-400'
-                      : 'border-zinc-600 bg-transparent'
+                      ? 'bg-[#005da7] border-[#005da7]'
+                      : 'border-[#c1c7d3] bg-transparent'
                   }`}
                 >
                   {rememberMe && (
-                    <Text className="text-white text-xs font-bold">✓</Text>
+                    <Text className="text-white text-sm font-bold">✓</Text>
                   )}
                 </View>
               </Pressable>
@@ -274,27 +297,27 @@ export default function SignUpScreen() {
                 disabled={loading}
               >
                 <View
-                  className={`h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 ${
+                  className={`h-6 w-6 flex-shrink-0 items-center justify-center rounded-md border-2 ${
                     consentAccepted
-                      ? 'bg-sky-400 border-sky-400'
-                      : 'bg-transparent border-zinc-600'
+                      ? 'bg-[#005da7] border-[#005da7]'
+                      : 'bg-transparent border-[#c1c7d3]'
                   }`}
                 >
-                  {consentAccepted && <Check color="#0a0a0a" size={14} />}
+                  {consentAccepted && <Check color="#ffffff" size={16} />}
                 </View>
                 <View className="flex-1">
-                  <Text className={`${tw.textStart} text-zinc-300 text-sm`}>
+                  <Text className={`${tw.textStart} text-[#414751] text-base`}>
                     אני מסכים ל
                     <Text
                       onPress={handleTermsPress}
-                      className="text-sky-400 font-semibold"
+                      className="text-[#005da7] font-bold"
                     >
                       תנאי השימוש
                     </Text>{' '}
                     ול
                     <Text
                       onPress={handlePrivacyPress}
-                      className="text-sky-400 font-semibold"
+                      className="text-[#005da7] font-bold"
                     >
                       מדיניות הפרטיות
                     </Text>
@@ -305,36 +328,46 @@ export default function SignUpScreen() {
 
             {/* כפתור הרשמה */}
             <TouchableOpacity
-              className={`bg-sky-400 rounded-xl py-4 items-center ${loading || isPreviewMode || !consentAccepted ? 'opacity-60' : ''}`}
+              className={`overflow-hidden rounded-2xl ${loading || isPreviewMode || !consentAccepted ? 'opacity-60' : ''}`}
               onPress={onSignUpPress}
               disabled={loading || isPreviewMode || !consentAccepted}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
-              {loading ? (
-                <ActivityIndicator color="#ffffff" />
-              ) : (
-                <Text className="text-white text-lg font-bold">הירשם</Text>
-              )}
+              <LinearGradient
+                colors={['#00457f', '#005da7', '#1b6d24']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                className={`${tw.flexRow} items-center justify-center gap-2 py-5`}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#ffffff" />
+                ) : (
+                  <>
+                    <Text className="text-white text-xl font-bold">הירשם</Text>
+                    <UserPlus size={24} color="#ffffff" />
+                  </>
+                )}
+              </LinearGradient>
             </TouchableOpacity>
 
             {/* קישור להתחברות */}
             <View className="flex-row justify-center gap-2 mt-6">
               {isPreviewMode ? (
                 <TouchableOpacity disabled={true}>
-                  <Text className="text-zinc-500 font-semibold text-base">
+                  <Text className="text-[#727782] font-bold text-base">
                     התחבר כאן
                   </Text>
                 </TouchableOpacity>
               ) : (
                 <Link href="/(auth)/sign-in" asChild={true}>
                   <TouchableOpacity>
-                    <Text className="text-sky-400 font-semibold text-base">
+                    <Text className="text-[#005da7] font-bold text-base">
                       התחבר כאן
                     </Text>
                   </TouchableOpacity>
                 </Link>
               )}
-              <Text className="text-zinc-400 text-base">כבר יש לך חשבון?</Text>
+              <Text className="text-[#414751] text-base">כבר יש לך חשבון?</Text>
             </View>
           </View>
         </View>

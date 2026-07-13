@@ -135,33 +135,33 @@ export default function SettingsScreen() {
   // ============================================================================
 
   return (
-    <SafeAreaView className="flex-1 bg-[#0a0a0a]" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-[#f8f9ff]" edges={['top']}>
       <ScrollView className="flex-1">
         {/* כותרת */}
         <View className="px-6 pt-6 pb-4">
-          <Text className={`text-[#ededed] text-3xl font-bold ${tw.textStart}`}>
+          <Text className={`text-[#191c21] text-4xl font-bold ${tw.textStart}`}>
             הגדרות
           </Text>
         </View>
 
         {/* סטטוס מנוי */}
-        <View className="mx-4 mb-4 p-4 rounded-xl bg-white border border-[#c1c7d3]">
+        <View className="mx-4 mb-4 p-5 rounded-2xl bg-white border border-[#c1c7d3]">
           <View className={`${tw.flexRow} items-center justify-between`}>
             <View
-              className={`px-3 py-1 rounded-full ${
-                isPremium ? 'bg-[#4fc3f7]/20' : 'bg-[#727782]'
+              className={`px-4 py-1.5 rounded-full ${
+                isPremium ? 'bg-[#d3e3ff]' : 'bg-[#e7e8ef]'
               }`}
             >
               <Text
-                className={`text-sm font-medium ${
-                  isPremium ? 'text-[#4fc3f7]' : 'text-[#414751]'
+                className={`text-base font-bold ${
+                  isPremium ? 'text-[#005da7]' : 'text-[#414751]'
                 }`}
               >
                 {isPremium ? 'פרימיום' : 'חינמי'}
               </Text>
             </View>
             <Text
-              className={`text-[#191c21] text-base font-medium ${tw.textStart}`}
+              className={`text-[#191c21] text-lg font-bold ${tw.textStart}`}
             >
               סטטוס מנוי
             </Text>
@@ -172,13 +172,17 @@ export default function SettingsScreen() {
         <View className="mx-4 mb-4">
           <TouchableOpacity
             onPress={handleSignOut}
-            className={`${tw.flexRow} items-center gap-3 p-4 rounded-xl bg-white border border-[#c1c7d3]`}
+            className={`${tw.flexRow} items-center gap-3 p-5 rounded-2xl bg-white border border-[#c1c7d3]`}
           >
-            <ChevronLeft size={20} color="#71717a" />
-            <Text className={`flex-1 text-red-400 text-base ${tw.textStart}`}>
+            <ChevronLeft size={24} color="#727782" />
+            <Text
+              className={`flex-1 text-[#c62828] text-lg font-bold ${tw.textStart}`}
+            >
               התנתקות
             </Text>
-            <LogOut size={20} color="#f87171" />
+            <View className="rounded-xl bg-[#ffdad6] p-2.5">
+              <LogOut size={24} color="#c62828" />
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -186,15 +190,17 @@ export default function SettingsScreen() {
         <View className="mx-4 mb-4">
           <TouchableOpacity
             onPress={handleDeleteAccount}
-            className={`${tw.flexRow} items-center gap-3 p-4 rounded-xl bg-[#ffdad6]/30 border-2 border-red-900`}
+            className={`${tw.flexRow} items-center gap-3 p-5 rounded-2xl bg-[#ffdad6] border border-[#f2b8b5]`}
           >
-            <ChevronLeft size={20} color="#991b1b" />
+            <ChevronLeft size={24} color="#b71c1c" />
             <Text
-              className={`flex-1 text-red-500 text-base font-bold ${tw.textStart}`}
+              className={`flex-1 text-[#b71c1c] text-lg font-bold ${tw.textStart}`}
             >
               מחיקת חשבון
             </Text>
-            <Trash2 size={20} color="#ef4444" />
+            <View className="rounded-xl bg-white p-2.5">
+              <Trash2 size={24} color="#b71c1c" />
+            </View>
           </TouchableOpacity>
         </View>
 
