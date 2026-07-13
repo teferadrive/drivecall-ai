@@ -130,4 +130,16 @@ export default defineSchema({
     .index('by_owner_due', ['ownerId', 'dueAt'])
     .index('by_owner_completed', ['ownerId', 'completed'])
     .index('by_customer', ['customerId']),
+
+  // דירוגי מיומנויות נהיגה לכל תלמיד (מעקב התקדמות).
+  // רשומה אחת לכל צירוף תלמיד+מיומנות; level 0-4.
+  skillAssessments: defineTable({
+    ownerId: v.id('users'),
+    customerId: v.id('customers'),
+    skill: v.string(), // מפתח המיומנות (ראה constants/drivingSkills.ts)
+    level: v.number(), // 0=לא תורגל, 1=מתחיל ... 4=מצוין
+    updatedAt: v.number(),
+  })
+    .index('by_customer', ['customerId'])
+    .index('by_customer_skill', ['customerId', 'skill']),
 });

@@ -22,6 +22,7 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SkillProgressCard } from '@/components/SkillProgressCard';
 import {
   type CallSource,
   callSources,
@@ -260,6 +261,10 @@ export default function CustomerDetailsScreen() {
                 </Text>
               </TouchableOpacity>
             </View>
+          </View>
+
+          <View className="mt-5">
+            <SkillProgressCard customerId={customerId} />
           </View>
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">

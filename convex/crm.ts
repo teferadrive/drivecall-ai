@@ -738,6 +738,69 @@ export const completeReminder = mutation({
   },
 });
 
+// דירוגי מיומנויות הנהיגה של תלמיד (מעקב התקדמות).
+export const listCustomerSkills = query({
+  args: {
+    customerId: v.id('customers'),
+  },
+  handler: async (ctx, { customerId }) => {
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return [];
+    }
+    const customer = await ctx.db.get(customerId);
+    if (!customer || customer.ownerId !== ownerId) {
+      return [];
+    }
+
+    return await ctx.db
+      .query('skillAssessments')
+      .withIndex('by_customer', (q) => q.eq('customerId', customerId))
+      .collect();
+  },
+});
+
+// קביעת/עדכון רמת מיומנות לתלמיד. יוצר רשומה אם לא קיימת.
+export const setCustomerSkill = mutation({
+  args: {
+    customerId: v.id('customers'),
+    skill: v.string(),
+    level: v.number(),
+  },
+  handler: async (ctx, { customerId, skill, level }) => {
+    const ownerId = await getCurrentUserId(ctx);
+    const customer = await ctx.db.get(customerId);
+
+    if (!customer || customer.ownerId !== ownerId) {
+      throw new Error('Customer not found');
+    }
+
+    // הגבלת הטווח לערכים חוקיים (0-4).
+    const safeLevel = Math.max(0, Math.min(4, Math.round(level)));
+    const now = Date.now();
+
+    const existing = await ctx.db
+      .query('skillAssessments')
+      .withIndex('by_customer_skill', (q) =>
+        q.eq('customerId', customerId).eq('skill', skill)
+      )
+      .unique();
+
+    if (existing) {
+      await ctx.db.patch(existing._id, { level: safeLevel, updatedAt: now });
+      return existing._id;
+    }
+
+    return await ctx.db.insert('skillAssessments', {
+      ownerId,
+      customerId,
+      skill,
+      level: safeLevel,
+      updatedAt: now,
+    });
+  },
+});
+
 function formatServerDateTime(value: number) {
   return new Intl.DateTimeFormat('he-IL', {
     dateStyle: 'short',
