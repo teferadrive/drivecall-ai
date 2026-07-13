@@ -39,10 +39,26 @@ const crmEventTypeValidator = v.union(
 );
 
 async function getCurrentUserId(ctx: QueryCtx | MutationCtx) {
+  const ownerId = await getCurrentUserIdOrNull(ctx);
+
+  if (!ownerId) {
+    throw new Error('Not authenticated');
+  }
+
+  return ownerId;
+}
+
+// גרסה בטוחה לשימוש בשאילתות (queries): מחזירה null במקום לזרוק שגיאה.
+// זה מונע קריסה של המסך במצב הביניים שבו הלקוח כבר מסומן כמאומת
+// אבל הטוקן עדיין לא הוכר על ידי השרת (race condition ב-Convex Auth,
+// למשל מיד אחרי התחברות מחדש של ה-WebSocket).
+async function getCurrentUserIdOrNull(
+  ctx: QueryCtx | MutationCtx
+): Promise<Id<'users'> | null> {
   const identity = await ctx.auth.getUserIdentity();
 
   if (!identity?.email) {
-    throw new Error('Not authenticated');
+    return null;
   }
 
   const user = await ctx.db
@@ -50,11 +66,7 @@ async function getCurrentUserId(ctx: QueryCtx | MutationCtx) {
     .withIndex('by_email', (q) => q.eq('email', identity.email ?? ''))
     .unique();
 
-  if (!user) {
-    throw new Error('User not found');
-  }
-
-  return user._id;
+  return user?._id ?? null;
 }
 
 export const listCustomers = query({
@@ -63,7 +75,10 @@ export const listCustomers = query({
     status: v.optional(leadStatusValidator),
   },
   handler: async (ctx, { search, status }) => {
-    const ownerId = await getCurrentUserId(ctx);
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return [];
+    }
     const rows = status
       ? await ctx.db
           .query('customers')
@@ -105,7 +120,10 @@ export const getCustomer = query({
     customerId: v.id('customers'),
   },
   handler: async (ctx, { customerId }) => {
-    const ownerId = await getCurrentUserId(ctx);
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return null;
+    }
     const customer = await ctx.db.get(customerId);
 
     if (!customer || customer.ownerId !== ownerId) {
@@ -198,7 +216,10 @@ function emptyDashboardStats() {
 export const getSmartAlerts = query({
   args: {},
   handler: async (ctx) => {
-    const ownerId = await getCurrentUserId(ctx);
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return [];
+    }
     const now = Date.now();
     const customers = await ctx.db
       .query('customers')
@@ -252,7 +273,14 @@ export const getSmartAlerts = query({
 export const getReportStats = query({
   args: {},
   handler: async (ctx) => {
-    const ownerId = await getCurrentUserId(ctx);
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return {
+        leadConversionRate: 0,
+        testPassRate: 0,
+        callHandlingRate: 0,
+      };
+    }
     const customers = await ctx.db
       .query('customers')
       .withIndex('by_owner', (q) => q.eq('ownerId', ownerId))
@@ -516,7 +544,10 @@ export const logCrmEvent = mutation({
 export const listRecentCalls = query({
   args: {},
   handler: async (ctx) => {
-    const ownerId = await getCurrentUserId(ctx);
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return [];
+    }
 
     return await ctx.db
       .query('callLogs')
@@ -531,7 +562,10 @@ export const listCustomerEvents = query({
     customerId: v.id('customers'),
   },
   handler: async (ctx, { customerId }) => {
-    const ownerId = await getCurrentUserId(ctx);
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return [];
+    }
     const customer = await ctx.db.get(customerId);
 
     if (!customer || customer.ownerId !== ownerId) {
@@ -600,7 +634,10 @@ export const listTodayLessons = query({
     dayEnd: v.number(),
   },
   handler: async (ctx, { dayStart, dayEnd }) => {
-    const ownerId = await getCurrentUserId(ctx);
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return [];
+    }
 
     const lessons = await ctx.db
       .query('lessons')
@@ -656,7 +693,10 @@ export const createReminder = mutation({
 export const listOpenReminders = query({
   args: {},
   handler: async (ctx) => {
-    const ownerId = await getCurrentUserId(ctx);
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return [];
+    }
 
     return await ctx.db
       .query('reminders')
