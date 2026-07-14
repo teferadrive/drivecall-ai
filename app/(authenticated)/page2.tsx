@@ -273,7 +273,10 @@ export default function OperationsScreen() {
           </Text>
 
           <View className="mt-5">
-            <LessonRecorderCard />
+            <LessonRecorderCard
+              customerId={activeCustomerId}
+              customerName={activeCustomer?.name}
+            />
           </View>
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">

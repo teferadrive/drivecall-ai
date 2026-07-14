@@ -1,23 +1,34 @@
+import { useMutation } from 'convex/react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Check, Mic, Pause, Phone, Play, Square } from 'lucide-react-native';
 import { useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { api } from '@/convex/_generated/api';
+import type { Id } from '@/convex/_generated/dataModel';
 import { tw } from '@/lib/rtl';
 import { useLessonRecorder } from '@/lib/useLessonRecorder';
 
 // כרטיס הקלטת שיעור: מתחיל/משהה/עוצר, ומשהה אוטומטית בזמן שיחה.
-// כרגע שומר את האודיו במכשיר; תמלול וסיכום יתווספו בשלב הבא.
+// שומר את האודיו במכשיר ורושם רשומה בכרטיס הלקוח. תמלול/סיכום בשלב הבא.
 export function LessonRecorderCard({
-  onFinished,
+  customerId,
+  customerName,
 }: {
-  onFinished?: (uri: string) => void;
+  customerId?: Id<'customers'>;
+  customerName?: string;
 }) {
   const recorder = useLessonRecorder();
+  const saveRecording = useMutation(api.crm.saveLessonRecording);
   const [consent, setConsent] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const isActive = recorder.status !== 'idle';
 
   const handleStart = async () => {
+    if (!customerId) {
+      Alert.alert('אין לקוח', 'בחר תלמיד לפני תחילת ההקלטה.');
+      return;
+    }
     if (!consent) {
       Alert.alert(
         'הסכמת התלמיד',
@@ -37,9 +48,30 @@ export function LessonRecorderCard({
 
   const handleStop = async () => {
     const uri = await recorder.stop();
-    if (uri) {
-      onFinished?.(uri);
-      Alert.alert('ההקלטה הסתיימה', 'השיעור נשמר. סיכום אוטומטי יתווסף בקרוב.');
+    if (!uri) {
+      return;
+    }
+
+    if (!customerId) {
+      Alert.alert('ההקלטה הסתיימה', 'ההקלטה נשמרה במכשיר.');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      await saveRecording({
+        customerId,
+        fileUri: uri,
+        durationSeconds: recorder.durationSeconds,
+      });
+      Alert.alert(
+        'ההקלטה נשמרה',
+        `השיעור של ${customerName ?? 'התלמיד'} נשמר בכרטיס הלקוח.`
+      );
+    } catch {
+      Alert.alert('שגיאה', 'ההקלטה נשמרה במכשיר אך לא נרשמה בכרטיס הלקוח.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -117,8 +149,9 @@ export function LessonRecorderCard({
             />
           )}
           <ControlButton
+            disabled={isSaving}
             icon={Square}
-            label="סיים שיעור"
+            label={isSaving ? 'שומר...' : 'סיים שיעור'}
             onPress={handleStop}
             tone="danger"
           />

@@ -35,21 +35,16 @@
       </intent-filter>
     </activity>
     <service android:name=".RecordingService" android:exported="false" android:foregroundServiceType="microphone"/>
+    <service android:name=".WhatsAppCallListenerService" android:exported="true" android:label="DriveCall AI - זיהוי שיחות WhatsApp" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+      <intent-filter>
+        <action android:name="android.service.notification.NotificationListenerService"/>
+      </intent-filter>
+    </service>
     <receiver android:name=".CallStateReceiver" android:exported="true">
       <intent-filter android:priority="1000">
         <action android:name="android.intent.action.PHONE_STATE"/>
         <action android:name="android.intent.action.NEW_OUTGOING_CALL"/>
       </intent-filter>
     </receiver>
-    <!-- מאזין להתראות WhatsApp כדי לזהות שיחות VoIP (דורש אישור ידני של המשתמש) -->
-    <service
-      android:name=".WhatsAppCallListenerService"
-      android:exported="true"
-      android:label="DriveCall AI - זיהוי שיחות WhatsApp"
-      android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-      <intent-filter>
-        <action android:name="android.service.notification.NotificationListenerService"/>
-      </intent-filter>
-    </service>
   </application>
 </manifest>

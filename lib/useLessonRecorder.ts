@@ -5,6 +5,11 @@ import {
   useAudioRecorder,
   useAudioRecorderState,
 } from 'expo-audio';
+import {
+  copyAsync,
+  documentDirectory,
+  makeDirectoryAsync,
+} from 'expo-file-system/legacy';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   addCallEndedListener,
@@ -136,7 +141,11 @@ export function useLessonRecorder(): LessonRecorder {
     }
     await recorder.stop();
     await stopRecordingService();
-    const uri = recorder.uri ?? null;
+
+    // העברת הקובץ מה-cache הזמני לאחסון קבוע כדי שלא יימחק.
+    const tempUri = recorder.uri ?? null;
+    const uri = tempUri ? await persistRecording(tempUri) : null;
+
     setRecordingUri(uri);
     setStatus('idle');
     return uri;
@@ -157,4 +166,25 @@ export function useLessonRecorder(): LessonRecorder {
     resume,
     stop,
   };
+}
+
+// מעביר קובץ הקלטה מה-cache הזמני לתיקיית recordings קבועה.
+// מחזיר את הנתיב הקבוע, או את הנתיב הזמני אם ההעברה נכשלה.
+async function persistRecording(tempUri: string): Promise<string> {
+  if (!documentDirectory) {
+    return tempUri;
+  }
+
+  try {
+    const dir = `${documentDirectory}recordings/`;
+    await makeDirectoryAsync(dir, { intermediates: true });
+
+    const extension = tempUri.split('.').pop() || 'm4a';
+    const dest = `${dir}lesson-${Date.now()}.${extension}`;
+    await copyAsync({ from: tempUri, to: dest });
+    return dest;
+  } catch {
+    // אם ההעברה נכשלה, לפחות נחזיר את הנתיב הזמני.
+    return tempUri;
+  }
 }

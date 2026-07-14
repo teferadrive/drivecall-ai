@@ -142,4 +142,16 @@ export default defineSchema({
   })
     .index('by_customer', ['customerId'])
     .index('by_customer_skill', ['customerId', 'skill']),
+
+  // רשומות הקלטות שיעור. הקובץ עצמו נשמר במכשיר (fileUri);
+  // כאן נשמרת רשומה לאיזה תלמיד, מתי, וכמה זמן.
+  lessonRecordings: defineTable({
+    ownerId: v.id('users'),
+    customerId: v.id('customers'),
+    fileUri: v.string(), // נתיב הקובץ באחסון המקומי של המכשיר
+    durationSeconds: v.number(),
+    recordedAt: v.number(),
+  })
+    .index('by_owner', ['ownerId'])
+    .index('by_customer', ['customerId']),
 });

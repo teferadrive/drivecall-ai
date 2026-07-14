@@ -801,6 +801,84 @@ export const setCustomerSkill = mutation({
   },
 });
 
+// שמירת רשומת הקלטת שיעור (הקובץ עצמו כבר נשמר במכשיר).
+export const saveLessonRecording = mutation({
+  args: {
+    customerId: v.id('customers'),
+    fileUri: v.string(),
+    durationSeconds: v.number(),
+  },
+  handler: async (ctx, { customerId, fileUri, durationSeconds }) => {
+    const ownerId = await getCurrentUserId(ctx);
+    const customer = await ctx.db.get(customerId);
+
+    if (!customer || customer.ownerId !== ownerId) {
+      throw new Error('Customer not found');
+    }
+
+    const now = Date.now();
+    const recordingId = await ctx.db.insert('lessonRecordings', {
+      ownerId,
+      customerId,
+      fileUri,
+      durationSeconds,
+      recordedAt: now,
+    });
+
+    // תיעוד אירוע בציר הזמן של הלקוח.
+    await ctx.db.insert('crmEvents', {
+      ownerId,
+      customerId,
+      type: 'lesson',
+      title: 'הוקלט שיעור',
+      details: `משך: ${Math.round(durationSeconds / 60)} דקות`,
+      createdAt: now,
+    });
+
+    return recordingId;
+  },
+});
+
+// רשימת הקלטות של תלמיד.
+export const listCustomerRecordings = query({
+  args: {
+    customerId: v.id('customers'),
+  },
+  handler: async (ctx, { customerId }) => {
+    const ownerId = await getCurrentUserIdOrNull(ctx);
+    if (!ownerId) {
+      return [];
+    }
+    const customer = await ctx.db.get(customerId);
+    if (!customer || customer.ownerId !== ownerId) {
+      return [];
+    }
+
+    return await ctx.db
+      .query('lessonRecordings')
+      .withIndex('by_customer', (q) => q.eq('customerId', customerId))
+      .order('desc')
+      .collect();
+  },
+});
+
+// מחיקת רשומת הקלטה (הקובץ במכשיר נמחק בנפרד בצד הלקוח).
+export const deleteLessonRecording = mutation({
+  args: {
+    recordingId: v.id('lessonRecordings'),
+  },
+  handler: async (ctx, { recordingId }) => {
+    const ownerId = await getCurrentUserId(ctx);
+    const recording = await ctx.db.get(recordingId);
+
+    if (!recording || recording.ownerId !== ownerId) {
+      throw new Error('Recording not found');
+    }
+
+    await ctx.db.delete(recordingId);
+  },
+});
+
 function formatServerDateTime(value: number) {
   return new Intl.DateTimeFormat('he-IL', {
     dateStyle: 'short',
