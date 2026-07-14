@@ -9,7 +9,6 @@
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <!-- הקלטת שיעור ברקע: שירות קדמי עם סוג "מיקרופון" -->
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
   <queries>
@@ -35,10 +34,13 @@
         <data android:scheme="mobile-template"/>
       </intent-filter>
     </activity>
-    <!-- שירות קדמי שמחזיק את ההקלטה חיה גם כשהאפליקציה ברקע -->
-    <service
-      android:name=".RecordingService"
-      android:exported="false"
-      android:foregroundServiceType="microphone"/>
+    <service android:name=".RecordingService" android:exported="false" android:foregroundServiceType="microphone"/>
+    <!-- Receiver קבוע לזיהוי שיחות - עובד גם כשהאפליקציה סגורה/ברקע -->
+    <receiver android:name=".CallStateReceiver" android:exported="true">
+      <intent-filter android:priority="1000">
+        <action android:name="android.intent.action.PHONE_STATE"/>
+        <action android:name="android.intent.action.NEW_OUTGOING_CALL"/>
+      </intent-filter>
+    </receiver>
   </application>
 </manifest>
