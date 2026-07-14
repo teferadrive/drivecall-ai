@@ -4,13 +4,10 @@ import DateTimePicker, {
 import { useConvexAuth, useMutation, useQuery } from 'convex/react';
 import {
   BellRing,
-  CalendarClock,
   CalendarDays,
-  CheckCircle2,
   Clock3,
   CreditCard,
   Plus,
-  TrendingUp,
 } from 'lucide-react-native';
 import { useMemo, useState } from 'react';
 import {
@@ -315,8 +312,8 @@ export default function OperationsScreen() {
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">
             <View className={`${tw.flexRow} mb-4 items-center gap-3`}>
-              <CalendarDays size={24} color="#005da7" />
-              <Text className="flex-1 text-right text-xl font-bold text-[#191c21]">
+              <Text className="text-3xl">📅</Text>
+              <Text className="flex-1 text-right text-2xl font-bold text-[#191c21]">
                 קביעת שיעור
               </Text>
             </View>
@@ -377,8 +374,8 @@ export default function OperationsScreen() {
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">
             <View className={`${tw.flexRow} mb-4 items-center gap-3`}>
-              <BellRing size={24} color="#954501" />
-              <Text className="flex-1 text-right text-xl font-bold text-[#191c21]">
+              <Text className="text-3xl">🔔</Text>
+              <Text className="flex-1 text-right text-2xl font-bold text-[#191c21]">
                 תזכורת מהירה
               </Text>
             </View>
@@ -430,9 +427,9 @@ export default function OperationsScreen() {
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">
             <View className={`${tw.flexRow} mb-4 items-center gap-3`}>
-              <CalendarDays size={24} color="#005da7" />
+              <Text className="text-3xl">🗓️</Text>
               <View className="flex-1">
-                <Text className="text-right text-xl font-bold text-[#191c21]">
+                <Text className="text-right text-2xl font-bold text-[#191c21]">
                   היום ביומן
                 </Text>
                 <Text className="text-right text-sm text-[#727782]">
@@ -481,8 +478,8 @@ export default function OperationsScreen() {
 
           <View className="mt-5 rounded-xl border border-[#ffb68b] bg-[#ffdbc8] p-4">
             <View className={`${tw.flexRow} mb-4 items-center gap-3`}>
-              <BellRing size={24} color="#954501" />
-              <Text className="flex-1 text-right text-xl font-bold text-[#191c21]">
+              <Text className="text-3xl">📌</Text>
+              <Text className="flex-1 text-right text-2xl font-bold text-[#191c21]">
                 תזכורות פתוחות
               </Text>
             </View>
@@ -527,8 +524,8 @@ export default function OperationsScreen() {
 
           <View className="mt-5 rounded-xl border border-[#ffb68b] bg-[#ffdbc8] p-4">
             <View className={`${tw.flexRow} mb-4 items-center gap-3`}>
-              <BellRing size={24} color="#954501" />
-              <Text className="flex-1 text-right text-xl font-bold text-[#191c21]">
+              <Text className="text-3xl">🧠</Text>
+              <Text className="flex-1 text-right text-2xl font-bold text-[#191c21]">
                 התראות חכמות
               </Text>
             </View>
@@ -561,8 +558,8 @@ export default function OperationsScreen() {
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">
             <View className={`${tw.flexRow} mb-4 items-center gap-3`}>
-              <TrendingUp size={24} color="#1b6d24" />
-              <Text className="flex-1 text-right text-xl font-bold text-[#191c21]">
+              <Text className="text-3xl">📊</Text>
+              <Text className="flex-1 text-right text-2xl font-bold text-[#191c21]">
                 דוחות וסטטיסטיקות
               </Text>
             </View>
@@ -592,7 +589,7 @@ export default function OperationsScreen() {
 
           <View className="mt-5 rounded-xl border border-[#c1c7d3] bg-white p-4">
             <View className={`${tw.flexRow} items-start gap-3`}>
-              <CheckCircle2 size={24} color="#005da7" />
+              <Text className="text-2xl">📆</Text>
               <Text className="flex-1 text-right text-sm leading-6 text-[#414751]">
                 סנכרון Google Calendar הוא השלב הבא: כרגע השיעורים נשמרים ביומן
                 הפנימי, ובהמשך אפשר להוסיף חיבור לחשבון Google.

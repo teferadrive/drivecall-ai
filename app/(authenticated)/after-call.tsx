@@ -1,13 +1,6 @@
 import { useMutation } from 'convex/react';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import {
-  ArrowRight,
-  Bot,
-  CalendarClock,
-  MessageSquareText,
-  Phone,
-  UserRound,
-} from 'lucide-react-native';
+import { ArrowRight } from 'lucide-react-native';
 import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api } from '@/convex/_generated/api';
@@ -72,7 +65,7 @@ export default function AfterCallScreen() {
           <View className="rounded-xl border border-[#a3c9ff] bg-[#d3e3ff] p-5">
             <View className={`${tw.flexRow} items-start gap-4`}>
               <View className="h-16 w-16 items-center justify-center rounded-full bg-[#e7e8ef]">
-                <UserRound size={34} color="#00457f" />
+                <Text className="text-4xl">👤</Text>
               </View>
               <View className="flex-1">
                 <Text className="text-right text-sm text-[#00457f]">
@@ -98,8 +91,8 @@ export default function AfterCallScreen() {
 
           <View className="mt-5 rounded-xl border border-[#88d982] bg-[#a0f399] p-4">
             <View className={`${tw.flexRow} items-start gap-3`}>
-              <Bot size={22} color="#1b6d24" />
-              <Text className="flex-1 text-right text-sm leading-6 text-[#002204]">
+              <Text className="text-2xl">🤖</Text>
+              <Text className="flex-1 text-right text-base leading-6 text-[#002204]">
                 מומלץ לתעד את השיחה, לשלוח הודעת המשך, ואם אין מענה לקבוע תזכורת
                 חזרה.
               </Text>
@@ -108,17 +101,17 @@ export default function AfterCallScreen() {
 
           <View className={`${tw.flexRow} mt-5 flex-wrap gap-3`}>
             <QuickAction
-              icon={Phone}
+              emoji="📞"
               label="תיעוד שיחה"
               onPress={handleSaveCall}
             />
             <QuickAction
-              icon={MessageSquareText}
+              emoji="💬"
               label="שליחת הודעה"
               onPress={() => router.push('/(authenticated)/page1')}
             />
             <QuickAction
-              icon={CalendarClock}
+              emoji="📅"
               label="קביעת תזכורת"
               onPress={() => router.push('/(authenticated)/page2')}
             />
@@ -141,11 +134,11 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 function QuickAction({
-  icon: Icon,
+  emoji,
   label,
   onPress,
 }: {
-  icon: React.ComponentType<{ size: number; color: string }>;
+  emoji: string;
   label: string;
   onPress: () => void;
 }) {
@@ -154,11 +147,11 @@ function QuickAction({
       accessibilityLabel={label}
       accessibilityRole="button"
       accessible={true}
-      className={`${tw.flexRow} min-h-[48px] min-w-[150px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#005da7] px-4`}
+      className={`${tw.flexRow} min-h-[52px] min-w-[150px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#005da7] px-4`}
       onPress={onPress}
     >
-      <Icon size={18} color="#ffffff" />
-      <Text className="font-bold text-white">{label}</Text>
+      <Text className="text-xl">{emoji}</Text>
+      <Text className="text-base font-bold text-white">{label}</Text>
     </TouchableOpacity>
   );
 }

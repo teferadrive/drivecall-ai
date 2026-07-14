@@ -6,8 +6,6 @@ import {
   ChevronLeft,
   CreditCard,
   LogIn,
-  LogOut,
-  Trash2,
   UserPlus,
 } from 'lucide-react-native';
 import { useState } from 'react';
@@ -176,12 +174,12 @@ export default function SettingsScreen() {
           >
             <ChevronLeft size={24} color="#727782" />
             <Text
-              className={`flex-1 text-[#c62828] text-lg font-bold ${tw.textStart}`}
+              className={`flex-1 text-[#c62828] text-xl font-bold ${tw.textStart}`}
             >
               התנתקות
             </Text>
-            <View className="rounded-xl bg-[#ffdad6] p-2.5">
-              <LogOut size={24} color="#c62828" />
+            <View className="rounded-xl bg-[#ffdad6] px-2 py-1">
+              <Text className="text-3xl">🚪</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -194,12 +192,12 @@ export default function SettingsScreen() {
           >
             <ChevronLeft size={24} color="#b71c1c" />
             <Text
-              className={`flex-1 text-[#b71c1c] text-lg font-bold ${tw.textStart}`}
+              className={`flex-1 text-[#b71c1c] text-xl font-bold ${tw.textStart}`}
             >
               מחיקת חשבון
             </Text>
-            <View className="rounded-xl bg-white p-2.5">
-              <Trash2 size={24} color="#b71c1c" />
+            <View className="rounded-xl bg-white px-2 py-1">
+              <Text className="text-3xl">🗑️</Text>
             </View>
           </TouchableOpacity>
         </View>

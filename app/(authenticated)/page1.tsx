@@ -1,17 +1,6 @@
 import { useConvexAuth, useMutation, useQuery } from 'convex/react';
 import { useRouter } from 'expo-router';
-import {
-  Edit3,
-  FileText,
-  Map as MapIcon,
-  MessageSquareText,
-  Navigation,
-  Phone,
-  Plus,
-  Search,
-  Trash2,
-  UserRoundSearch,
-} from 'lucide-react-native';
+import { Plus, Search } from 'lucide-react-native';
 import { useCallback, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -519,17 +508,17 @@ export default function CrmScreen() {
 
                 <View className={`${tw.flexRow} mt-4 gap-2`}>
                   <ActionButton
-                    icon={Phone}
+                    emoji="📞"
                     label="חיוג"
                     onPress={() => handleCall(customer)}
                   />
                   <ActionButton
-                    icon={MessageSquareText}
+                    emoji="✉️"
                     label="SMS"
                     onPress={() => handleSms(customer)}
                   />
                   <ActionButton
-                    icon={MessageSquareText}
+                    emoji="💬"
                     label="WhatsApp"
                     onPress={() => handleWhatsApp(customer)}
                   />
@@ -540,8 +529,8 @@ export default function CrmScreen() {
                     className={`${tw.flexRow} min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#e7e8ef] px-2`}
                     onPress={() => handleMoveStatus(customer)}
                   >
-                    <Edit3 size={16} color="#005da7" />
-                    <Text className="text-xs font-bold text-[#191c21]">
+                    <Text className="text-xl">🔄</Text>
+                    <Text className="text-sm font-bold text-[#191c21]">
                       סטטוס
                     </Text>
                   </TouchableOpacity>
@@ -549,22 +538,22 @@ export default function CrmScreen() {
 
                 <View className={`${tw.flexRow} mt-2 gap-2`}>
                   <ActionButton
-                    icon={UserRoundSearch}
+                    emoji="👤"
                     label="כרטיס"
                     onPress={() => handleOpenCustomer(customer)}
                   />
                   <ActionButton
-                    icon={Navigation}
+                    emoji="🧭"
                     label="Waze"
                     onPress={() => handleWaze(customer)}
                   />
                   <ActionButton
-                    icon={MapIcon}
+                    emoji="🗺️"
                     label="Maps"
                     onPress={() => handleMaps(customer)}
                   />
                   <ActionButton
-                    icon={FileText}
+                    emoji="📄"
                     label="מסמכים"
                     onPress={() =>
                       recordEvent(
@@ -582,8 +571,8 @@ export default function CrmScreen() {
                     className={`${tw.flexRow} min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#ffdad6] px-2`}
                     onPress={() => handleDeleteCustomer(customer)}
                   >
-                    <Trash2 size={16} color="#93000a" />
-                    <Text className="text-xs font-bold text-[#93000a]">
+                    <Text className="text-xl">🗑️</Text>
+                    <Text className="text-sm font-bold text-[#93000a]">
                       מחיקה
                     </Text>
                   </TouchableOpacity>
@@ -643,11 +632,11 @@ function MiniStat({ label, value }: { label: string; value: string }) {
 }
 
 function ActionButton({
-  icon: Icon,
+  emoji,
   label,
   onPress,
 }: {
-  icon: React.ComponentType<{ size: number; color: string }>;
+  emoji: string;
   label: string;
   onPress: () => void;
 }) {
@@ -656,11 +645,11 @@ function ActionButton({
       accessibilityLabel={label}
       accessibilityRole="button"
       accessible={true}
-      className={`${tw.flexRow} min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl bg-[#e7e8ef] px-2`}
+      className={`${tw.flexRow} min-h-[48px] flex-1 items-center justify-center gap-1 rounded-xl bg-[#e7e8ef] px-2`}
       onPress={onPress}
     >
-      <Icon size={16} color="#005da7" />
-      <Text className="text-xs font-bold text-[#191c21]">{label}</Text>
+      <Text className="text-xl">{emoji}</Text>
+      <Text className="text-sm font-bold text-[#191c21]">{label}</Text>
     </TouchableOpacity>
   );
 }
