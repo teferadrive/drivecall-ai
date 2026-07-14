@@ -10,7 +10,8 @@ class AndroidCallStatePackage : ReactPackage {
     reactContext: ReactApplicationContext
   ): List<NativeModule> = listOf(
     AndroidCallStateModule(reactContext),
-    RecordingServiceModule(reactContext)
+    RecordingServiceModule(reactContext),
+    NotificationAccessModule(reactContext)
   )
 
   override fun createViewManagers(

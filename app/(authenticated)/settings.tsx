@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { WhatsAppDetectionCard } from '@/components/WhatsAppDetectionCard';
 import {
   APP_ENV,
   IS_DEV_MODE,
@@ -165,6 +166,9 @@ export default function SettingsScreen() {
             </Text>
           </View>
         </View>
+
+        {/* זיהוי שיחות WhatsApp */}
+        <WhatsAppDetectionCard />
 
         {/* כפתור התנתקות */}
         <View className="mx-4 mb-4">
