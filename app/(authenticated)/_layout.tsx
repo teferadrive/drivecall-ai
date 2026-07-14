@@ -1,13 +1,6 @@
 import { useConvexAuth } from 'convex/react';
 import { Redirect, Tabs, useRootNavigationState } from 'expo-router';
-import type { LucideIcon } from 'lucide-react-native';
-import {
-  BarChart3,
-  Home,
-  Settings,
-  UserRoundSearch,
-} from 'lucide-react-native';
-import { ActivityIndicator, I18nManager, View } from 'react-native';
+import { ActivityIndicator, I18nManager, Text, View } from 'react-native';
 import { PAYMENT_SYSTEM_ENABLED } from '@/config/appConfig';
 import { useRevenueCat } from '@/contexts/RevenueCatContext';
 import { IS_RTL } from '@/lib/rtl';
@@ -15,7 +8,7 @@ import { IS_RTL } from '@/lib/rtl';
 type AppTab = {
   name: string;
   title: string;
-  icon: LucideIcon;
+  emoji: string;
 };
 
 export default function AuthenticatedLayout() {
@@ -39,35 +32,37 @@ export default function AuthenticatedLayout() {
     return <Redirect href="/(auth)/paywall" />;
   }
 
+  // הסדר הלוגי: דשבורד, לקוחות, יומן, הגדרות.
   const tabs: AppTab[] = [
     {
       name: 'index',
       title: 'דשבורד',
-      icon: Home,
+      emoji: '🏠',
     },
     {
       name: 'page1',
       title: 'לקוחות',
-      icon: UserRoundSearch,
+      emoji: '🧑‍🤝‍🧑',
     },
     {
       name: 'page2',
       title: 'יומן',
-      icon: BarChart3,
+      emoji: '🗓️',
     },
     {
       name: 'settings',
       title: 'הגדרות',
-      icon: Settings,
+      emoji: '⚙️',
     },
   ];
 
+  // סידור טאבים עקבי: כשה-RTL הנייטיב פעיל הוא כבר מהפך את סדר הבר,
+  // אז שולחים את הרשימה כרגיל. כשהוא לא פעיל (למשל Expo Go) אבל האפליקציה
+  // ב-RTL, הופכים ידנית כדי שהדשבורד יופיע מימין. כך הסדר תמיד:
+  // דשבורד (ימין) ← לקוחות ← יומן ← הגדרות (שמאל).
   const isNativeRTLEnabled = I18nManager.isRTL === true;
-  const orderedTabs = isNativeRTLEnabled
-    ? tabs
-    : IS_RTL
-      ? [...tabs].reverse()
-      : tabs;
+  const orderedTabs =
+    !isNativeRTLEnabled && IS_RTL ? [...tabs].reverse() : tabs;
 
   return (
     <Tabs
@@ -76,14 +71,14 @@ export default function AuthenticatedLayout() {
         tabBarActiveTintColor: '#00457f',
         tabBarInactiveTintColor: '#727782',
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 13,
           fontWeight: '700',
         },
         tabBarStyle: {
           backgroundColor: '#ffffff',
           borderTopColor: '#c1c7d3',
-          minHeight: 64,
-          paddingBottom: 8,
+          minHeight: 70,
+          paddingBottom: 10,
           paddingTop: 8,
         },
       }}
@@ -94,8 +89,10 @@ export default function AuthenticatedLayout() {
           name={tab.name}
           options={{
             title: tab.title,
-            tabBarIcon: ({ color, size }: { color: string; size: number }) => (
-              <tab.icon color={color} size={size} />
+            tabBarIcon: ({ focused }: { focused: boolean }) => (
+              <Text style={{ fontSize: 26, opacity: focused ? 1 : 0.55 }}>
+                {tab.emoji}
+              </Text>
             ),
           }}
         />
